@@ -1,0 +1,25 @@
+---
+- hosts: all
+  become: true
+  tasks:
+  - name: apt get update
+    apt:
+      upgrade: dist
+  - name: apt get docker-compose
+    apt:
+      pkg:
+        - docker-compose
+        - firefox
+  - name: download chrome
+    get_url:
+      url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+      dest: /tmp
+      mode:'0440'
+  - name: Install chrome
+      apt: deb="/tmp/google-chrome-stable_current_amd64.deb"
+      sudo: true
+  - name: Git clone yangexplorer-docker
+    git:
+      repo: 'https://github.com/fsedano/yangexplorer-docker'
+      dest: /tmp
+      clone: yes
